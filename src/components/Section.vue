@@ -5,7 +5,7 @@
         <v-skeleton-loader height="260px" width="280px" type="image" />
       </div>
       <div v-else key="content">
-        <v-card class="section__content" hover v-ripple>
+        <v-card class="section__content" hover v-ripple @click="goToSection">
           <div class="section__content__img">
             <v-img
               height="100%"
@@ -24,8 +24,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Section } from '@/classes/Section.ts'
-import { SectionEnum } from '@/enum/SectionEnum.ts'
+import { Section } from '@/classes/Section'
+import { SectionEnum } from '@/enum/SectionEnum'
+
+const emit = defineEmits(['goTo'])
 
 const props = defineProps<{
   section: Section
@@ -51,18 +53,25 @@ const getImage = computed<string>(() => {
 
   return img
 })
+
+function goToSection() {
+  emit('goTo', props.section.code)
+}
 </script>
 
 <style lang="scss">
 .section {
   margin: 10px;
+  border-radius: 4px;
 
   &__loader {
     height: 260px;
     width: 280px;
+    border-radius: 4px;
 
     .v-skeleton-loader__image.v-skeleton-loader__bone {
       height: 260px;
+      border-radius: 4px;
     }
   }
 
@@ -76,6 +85,8 @@ const getImage = computed<string>(() => {
     &__img {
       height: 80%;
       width: 100%;
+
+      padding: 10px;
     }
 
     &__text {

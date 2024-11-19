@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "axios": "^1.7.7",
+    "lodash.debounce": "^4.0.8",
     "pinia": "^2.2.4",
     "vite-plugin-require": "^1.2.14",
     "vue": "^3.5.12",
@@ -20,6 +22,7 @@
     "vuetify": "^3.7.3"
   },
   "devDependencies": {
+    "@mdi/font": "^7.4.47",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.16.11",
     "@vitejs/plugin-vue": "^5.1.4",
@@ -28,6 +31,7 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^9.12.0",
     "eslint-plugin-vue": "^9.29.0",
+    "material-design-icons-iconfont": "^6.7.0",
     "npm-run-all2": "^6.2.3",
     "prettier": "^3.3.3",
     "sass-embedded": "^1.80.6",

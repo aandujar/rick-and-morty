@@ -5,6 +5,7 @@
       :key="index"
       :section="section"
       :loading="loading"
+      @goTo="goToSection"
     />
   </div>
 </template>
@@ -14,17 +15,37 @@ import { ref, onMounted } from 'vue'
 import { Section } from '@/classes/Section'
 import SectionComponent from '@/components/Section.vue'
 import { SectionEnum } from '@/enum/SectionEnum'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const sections = ref<Section[]>([
-  { code: SectionEnum.CHARACTER, name: 'Personajes' },
-  { code: SectionEnum.EPISODE, name: 'Episodios' },
-  { code: SectionEnum.LOCATION, name: 'Localizaciones' },
+  { code: SectionEnum.CHARACTER, name: 'Characters' },
+  /*{ code: SectionEnum.EPISODE, name: 'Episodes' },
+  { code: SectionEnum.LOCATION, name: 'Locations' },*/
 ])
 const loading = ref<boolean>(true)
 
 onMounted(() => {
   setTimeout(() => (loading.value = false), 2000)
 })
+
+function goToSection(sectionCode: string) {
+  let section
+
+  switch (sectionCode) {
+    case SectionEnum.CHARACTER:
+      section = 'character'
+      break
+    case SectionEnum.EPISODE:
+      section = 'episode.png'
+      break
+    default:
+      section = 'location.png'
+      break
+  }
+
+  router.push(section)
+}
 </script>
 
 <style lang="scss" scoped>

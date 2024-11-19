@@ -9,10 +9,11 @@ import { RouterView } from 'vue-router'
 </template>
 
 <style lang="scss" scoped>
+@use 'sass:color';
 .app {
   height: 100vh;
   width: 100vw;
-  padding: 0;
-  background-color: #bfffbf;
+  padding: 0 !important;
+  background-color: color.adjust(#bfffbf, $lightness: 5%);
 }
 </style>

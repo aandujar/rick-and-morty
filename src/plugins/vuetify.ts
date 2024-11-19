@@ -1,9 +1,11 @@
 //import 'vuetify/lib/styles/main.sass';
 //import '../sass/variables.scss';
 
-import { createVuetify } from 'vuetify';
-import * as components from 'vuetify/lib/components/index';
-import * as directives from 'vuetify/lib/directives/index';
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/lib/components/index'
+import * as directives from 'vuetify/lib/directives/index'
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
 
 export const vuetify = createVuetify({
   components,
@@ -20,12 +22,12 @@ export const vuetify = createVuetify({
           // success: '#00cec9',
           // surface: '#6c5ce7',
           // warning: '#2d3436',
-        //  yellow: '#c89300',
-         // orange: '#ce5c00',
+          //  yellow: '#c89300',
+          // orange: '#ce5c00',
         },
         //dark: false,
         //variables: {},
       },
     },
   },
-});
+})
