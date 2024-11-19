@@ -5,10 +5,13 @@ export class Character {
   name: string
   status: string
   species: string
-  type: string
+  _type: string
   gender: string
   image?: string
   _origin?: CharacterLocation
+  _location?: CharacterLocation
+  created?: string
+  episode: string[]
 
   constructor(
     id: number,
@@ -19,12 +22,15 @@ export class Character {
     gender: string,
     image?: string,
     origin?: CharacterLocation,
+    location?: CharacterLocation,
+    created?: string,
+    episode?: string[],
   ) {
     this.id = id
     this.name = name
     this.status = status
     this.species = species
-    this.type = type
+    this._type = type
     this.gender = gender
     if (image) {
       this.image = image
@@ -32,6 +38,13 @@ export class Character {
     if (origin) {
       this._origin = origin
     }
+    if (location) {
+      this._location = location
+    }
+    if (created) {
+      this.created = created
+    }
+    this.episode = episode ? [...episode] : []
   }
 
   public get origin(): string {
@@ -42,5 +55,29 @@ export class Character {
       originName = 'No origin'
     }
     return originName
+  }
+
+  public get location(): string {
+    let locationName
+    if (
+      this._location &&
+      this._location.name &&
+      this._location.name.length > 0
+    ) {
+      locationName = this._location.name
+    } else {
+      locationName = 'No location'
+    }
+    return locationName
+  }
+
+  public get type(): string {
+    let typeName
+    if (this._type && this._type.length > 0) {
+      typeName = this._type
+    } else {
+      typeName = 'No type'
+    }
+    return typeName
   }
 }

@@ -18,7 +18,7 @@ const props = defineProps<{
   status: String
 }>()
 
-const statusColor = computed(() => {
+const statusColor = computed<string>(() => {
   let color
 
   switch (props.status) {

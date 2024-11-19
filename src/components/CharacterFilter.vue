@@ -52,13 +52,13 @@ const genderSelector = ref<String[]>([
   CharacterGenderEnum.UNKNOW,
 ])
 
-const name = ref<string>('')
-const status = ref<string>('')
-const gender = ref<string>('')
+const name = ref<string>()
+const status = ref<string>()
+const gender = ref<string>()
 
 watch(name, debounce(sendData, 500))
 
-function sendData() {
+function sendData(): void {
   emit('input', name.value, status.value, gender.value)
 }
 </script>

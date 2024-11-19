@@ -34,6 +34,7 @@
           v-for="character in characterStore.characters"
           :key="character.id"
           :characterModel="character"
+          @input="goCharacterDetail"
         />
         <div class="characters__content__pagination text-center">
           <v-pagination
@@ -50,12 +51,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { InfoApi } from '@/classes/InfoApi'
 import Character from '@/components/Character.vue'
 import CharacterFilterComponent from '@/components/CharacterFilter.vue'
 import { CharacterFilter } from '@/classes/CharacterFilter'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const characterStore = useCharacterStore()
 
@@ -66,9 +69,9 @@ const currentPage = ref<number>(1)
 
 const characterFilter: CharacterFilter = new CharacterFilter(0, '', '', '')
 
-onMounted(() => {
-  getCharacters()
-})
+onMounted(getCharacters)
+
+onBeforeUnmount(() => characterStore.setCharacters([]))
 
 function setCharacterFilter(
   name: string,
@@ -82,7 +85,7 @@ function setCharacterFilter(
   getCharacters()
 }
 
-function getCharacters() {
+function getCharacters(): void {
   loading.value = true
   characterFilter.page = currentPage.value - 1
 
@@ -99,6 +102,10 @@ function getCharacters() {
     .finally(() => {
       setTimeout(() => (loading.value = false), 2000)
     })
+}
+
+function goCharacterDetail(characterId: number): void {
+  router.push(`character/${characterId}`)
 }
 </script>
 
