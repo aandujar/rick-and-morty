@@ -14,7 +14,10 @@
     <Transition name="fade" mode="out-in">
       <div v-show="!loading" key="content" class="characters__content">
         <div class="characters__content__pagination text-center pa-2">
-          <CharacterFilterComponent @input="setCharacterFilter" />
+          <CharacterFilterComponent
+            @input="setCharacterFilter"
+            @goBack="goBack"
+          />
         </div>
         <div
           v-if="
@@ -54,10 +57,11 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { InfoApi } from '@/classes/InfoApi'
-import Character from '@/components/Character.vue'
-import CharacterFilterComponent from '@/components/CharacterFilter.vue'
 import { CharacterFilter } from '@/classes/CharacterFilter'
+import Character from '@/components/Character/Character.vue'
+import CharacterFilterComponent from '@/components/Character/CharacterFilter.vue'
 import { useRouter } from 'vue-router'
+import { SECTIONS, CHARACTERS } from '@/router/routerInterfaces'
 const router = useRouter()
 
 const characterStore = useCharacterStore()
@@ -105,11 +109,15 @@ function getCharacters(): void {
 }
 
 function goCharacterDetail(characterId: number): void {
-  router.push(`character/${characterId}`)
+  router.push(`${CHARACTERS}/${characterId}`)
+}
+
+function goBack(): void {
+  router.push(SECTIONS)
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .characters {
   height: 100vh;
   width: 100vw;
@@ -127,6 +135,11 @@ function goCharacterDetail(characterId: number): void {
       margin: 10px;
       height: 200px;
       width: 280px;
+
+      .v-skeleton-loader__image.v-skeleton-loader__bone {
+        height: 200px;
+        border-radius: 4px;
+      }
     }
 
     &__pagination {

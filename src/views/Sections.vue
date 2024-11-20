@@ -13,9 +13,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Section } from '@/classes/Section'
-import SectionComponent from '@/components/Section.vue'
 import { SectionEnum } from '@/enum/SectionEnum'
+import SectionComponent from '@/components/Section.vue'
 import { useRouter } from 'vue-router'
+import { CHARACTERS } from '@/router/routerInterfaces'
 const router = useRouter()
 
 const sections = ref<Section[]>([
@@ -34,7 +35,7 @@ function goToSection(sectionCode: string) {
 
   switch (sectionCode) {
     case SectionEnum.CHARACTER:
-      section = 'character'
+      section = CHARACTERS
       break
     case SectionEnum.EPISODE:
       section = 'episode.png'

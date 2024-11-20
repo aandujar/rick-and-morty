@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { Character } from '@/classes/Character'
-import CharacterStatus from '@/components/CharacterStatus.vue'
+import CharacterStatus from '@/components/Character/CharacterStatus.vue'
 
 const emit = defineEmits(['goBack'])
 

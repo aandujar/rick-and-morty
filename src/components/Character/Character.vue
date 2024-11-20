@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { Character } from '@/classes/Character'
 import { CharacterLocation } from '@/classes/CharacterLocation'
-import CharacterStatus from '@/components/CharacterStatus.vue'
+import CharacterStatus from '@/components/Character/CharacterStatus.vue'
 import { ref } from 'vue'
 
 const emit = defineEmits(['input'])

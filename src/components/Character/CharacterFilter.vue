@@ -1,6 +1,12 @@
 <template>
   <div>
     <v-card class="character-filter pa-2" hover>
+      <v-btn
+        icon="mdi-arrow-left-thin"
+        size="medium"
+        class="ma-1"
+        @click="goBack"
+      ></v-btn>
       <v-row class="pt-2">
         <v-col cols="12" xs="12" md="4" class="pa-4">
           <v-text-field
@@ -38,7 +44,8 @@ import { ref, watch } from 'vue'
 import debounce from 'lodash.debounce'
 import { CharacterStatusEnum } from '@/enum/CharacterStatusEnum'
 import { CharacterGenderEnum } from '@/enum/CharacterGenderEnum'
-const emit = defineEmits(['input'])
+
+const emit = defineEmits(['input', 'goBack'])
 
 const statusSelector = ref<String[]>([
   CharacterStatusEnum.ALIVE,
@@ -60,6 +67,10 @@ watch(name, debounce(sendData, 500))
 
 function sendData(): void {
   emit('input', name.value, status.value, gender.value)
+}
+
+function goBack(): void {
+  emit('goBack')
 }
 </script>
 

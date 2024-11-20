@@ -6,12 +6,7 @@
         key="loader"
         class="character-detail__loader pt-8 px-4"
       >
-        <v-skeleton-loader
-          height="400px"
-          width="80%"
-          type="card"
-          style="border-radius: 4px"
-        />
+        <v-skeleton-loader height="400px" width="80%" type="card" />
       </div>
       <div v-else key="content" class="character-detail__content">
         <v-col cols="12" xs="12">
@@ -32,14 +27,14 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import type { Character } from '@/classes/Character'
-import { useRoute } from 'vue-router'
-import CharacterComplete from '@/components/CharacterComplete.vue'
-import CharacterEpisodes from '@/components/CharacterEpisodes.vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import CharacterComplete from '@/components/Character/CharacterComplete.vue'
+import CharacterEpisodes from '@/components/Character/CharacterEpisodes.vue'
+import { CHARACTERS } from '@/router/routerInterfaces'
+import { useRouter, useRoute } from 'vue-router'
 
-const characterStore = useCharacterStore()
+const router = useRouter()
 const route = useRoute()
+const characterStore = useCharacterStore()
 
 const loading = ref<boolean>(true)
 
@@ -56,11 +51,11 @@ function getCharacter(): void {
 }
 
 function goCharacters(): void {
-  router.push('/character')
+  router.push(CHARACTERS)
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .character-detail {
   height: 100vh;
   width: 100vw;
@@ -73,6 +68,11 @@ function goCharacters(): void {
     display: flex;
     flex-direction: row;
     justify-content: center;
+
+    .v-skeleton-loader__image.v-skeleton-loader__bone {
+      height: 400px;
+      border-radius: 4px;
+    }
   }
 
   &__content {
