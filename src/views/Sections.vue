@@ -16,13 +16,13 @@ import { Section } from '@/classes/Section'
 import { SectionEnum } from '@/enum/SectionEnum'
 import SectionComponent from '@/components/Section.vue'
 import { useRouter } from 'vue-router'
-import { CHARACTERS } from '@/router/routerInterfaces'
+import { CHARACTERS, EPISODES, LOCATIONS } from '@/router/routerInterfaces'
 const router = useRouter()
 
 const sections = ref<Section[]>([
   { code: SectionEnum.CHARACTER, name: 'Characters' },
-  /*{ code: SectionEnum.EPISODE, name: 'Episodes' },
-  { code: SectionEnum.LOCATION, name: 'Locations' },*/
+  { code: SectionEnum.EPISODE, name: 'Episodes' },
+  /*{ code: SectionEnum.LOCATION, name: 'Locations' },*/
 ])
 const loading = ref<boolean>(true)
 
@@ -38,10 +38,10 @@ function goToSection(sectionCode: string) {
       section = CHARACTERS
       break
     case SectionEnum.EPISODE:
-      section = 'episode.png'
+      section = EPISODES
       break
     default:
-      section = 'location.png'
+      section = LOCATIONS
       break
   }
 

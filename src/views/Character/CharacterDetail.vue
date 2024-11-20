@@ -1,5 +1,14 @@
 <template>
   <div class="character-detail">
+    <v-snackbar
+      v-model="showError"
+      :timeout="5000"
+      location="top"
+      color="red"
+      height="100px"
+    >
+      No character found
+    </v-snackbar>
     <Transition name="fade" mode="out-in">
       <div
         v-if="loading"
@@ -37,6 +46,7 @@ const route = useRoute()
 const characterStore = useCharacterStore()
 
 const loading = ref<boolean>(true)
+const showError = ref<boolean>(false)
 
 onMounted(getCharacter)
 
@@ -47,6 +57,10 @@ function getCharacter(): void {
 
   characterStore
     .getCharacterById(Number(route.params.characterId))
+    .catch(() => {
+      showError.value = true
+      setTimeout(() => router.push(CHARACTERS), 2000)
+    })
     .finally(() => setTimeout(() => (loading.value = false), 2000))
 }
 

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Sections from '@/views/Sections.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +6,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'Sections',
-      component: Sections,
+      component: () => import('@/views/Sections.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Not found',
+      component: () => import('@/views/NotFound.vue'),
     },
     {
       path: '/character',
@@ -18,6 +22,11 @@ const router = createRouter({
       path: '/character/:characterId',
       name: 'CharacterDetail',
       component: () => import('@/views/Character/CharacterDetail.vue'),
+    },
+    {
+      path: '/episode',
+      name: 'Episodes',
+      component: () => import('@/views/Episode/Episodes.vue'),
     },
   ],
 })
