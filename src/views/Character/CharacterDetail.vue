@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useCharacterStore } from '@/stores/characterStore'
-import type { Character } from '@/classes/Character'
+import { Character } from '@/classes/Character'
 import CharacterComplete from '@/components/Character/CharacterComplete.vue'
 import CharacterEpisodes from '@/components/Character/CharacterEpisodes.vue'
 import { CHARACTERS } from '@/router/routerInterfaces'
@@ -59,7 +59,7 @@ function getCharacter(): void {
     .getCharacterById(Number(route.params.characterId))
     .catch(() => {
       showError.value = true
-      setTimeout(() => router.push(CHARACTERS), 2000)
+      setTimeout(goCharacters, 2000)
     })
     .finally(() => setTimeout(() => (loading.value = false), 2000))
 }

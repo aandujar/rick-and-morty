@@ -34,7 +34,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const images = import.meta.glob('@/assets/images/section/*', { eager: true })
+//const images = import.meta.glob('@/assets/images/section/*', { eager: true })
 
 const getImage = computed<string>(() => {
   let img

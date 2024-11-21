@@ -103,9 +103,7 @@ function getCharacters(): void {
       totalElements.value = 0
       totalPages.value = 0
     })
-    .finally(() => {
-      setTimeout(() => (loading.value = false), 2000)
-    })
+    .finally(() => setTimeout(() => (loading.value = false), 2000))
 }
 
 function goCharacterDetail(characterId: number): void {

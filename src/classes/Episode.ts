@@ -20,6 +20,6 @@ export class Episode {
     this.air_date = air_date
     this.episode = episode
     this.characters = characters
-    this.image = `src/assets/images/episode/${this.id}.jpg`
+    this.image = `/src/assets/images/episode/${this.id}.jpg`
   }
 }

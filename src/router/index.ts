@@ -28,6 +28,11 @@ const router = createRouter({
       name: 'Episodes',
       component: () => import('@/views/Episode/Episodes.vue'),
     },
+    {
+      path: '/episode/:episodeId',
+      name: 'EpisodeDetail',
+      component: () => import('@/views/Episode/EpisodeDetail.vue'),
+    },
   ],
 })
 

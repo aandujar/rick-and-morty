@@ -1,4 +1,4 @@
-import type { APIResponseList, APIResponseElement } from '@/classes/ApiResponse'
+import type { APIResponseList, APIResponse } from '@/classes/ApiResponse'
 import type { Episode } from '@/classes/Episode'
 import type { EpisodeFilter } from '@/classes/EpisodeFilter'
 import http from '@/http-common'
@@ -8,7 +8,7 @@ class EpisodeService {
     return http.get('/episode', { params: pagination })
   }
 
-  getById(episodeId: number): Promise<APIResponseElement<Episode>> {
+  getById(episodeId: number): Promise<APIResponse<Episode>> {
     return http.get(`/episode/${episodeId}`)
   }
 }

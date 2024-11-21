@@ -1,6 +1,6 @@
 import type { InfoApi } from '@/classes/InfoApi'
 
-export type APIResponseElement<T> = {
+export type APIResponse<T> = {
   data: T
   status: number
 }

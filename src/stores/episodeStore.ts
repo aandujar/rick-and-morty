@@ -5,7 +5,7 @@ import EpisodeService from '@/services/episodeService'
 import { Episode } from '@/classes/Episode'
 import { EpisodeFilter } from '@/classes/EpisodeFilter'
 import { InfoApi } from '@/classes/InfoApi'
-import type { APIResponseElement, APIResponseList } from '@/classes/ApiResponse'
+import type { APIResponse, APIResponseList } from '@/classes/ApiResponse'
 
 export const useEpisodeStore = defineStore('episode', () => {
   const loading = ref<boolean>(false)
@@ -47,7 +47,7 @@ export const useEpisodeStore = defineStore('episode', () => {
   async function getEpisodeById(episodeId: number): Promise<Episode> {
     return new Promise((resolve, reject) => {
       EpisodeService.getById(episodeId)
-        .then((response: APIResponseElement<Episode>) => {
+        .then((response: APIResponse<Episode>) => {
           setEpisode(response.status === 200 ? response.data : ({} as Episode))
           resolve(response.data)
         })

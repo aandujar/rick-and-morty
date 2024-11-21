@@ -6,15 +6,20 @@ import { Character } from '@/classes/Character'
 import { CharacterFilter } from '@/classes/CharacterFilter'
 import { InfoApi } from '@/classes/InfoApi'
 import { CharacterLocation } from '@/classes/CharacterLocation'
-import type { APIResponseElement, APIResponseList } from '@/classes/ApiResponse'
+import type { APIResponse, APIResponseList } from '@/classes/ApiResponse'
 
 export const useCharacterStore = defineStore('character', () => {
   const loading = ref<boolean>(false)
   const characters = ref<Character[]>([])
+  const charactersDetail = ref<Character[]>([])
   let characterDetail = ref<Character>({} as Character)
 
   function setCharacters(charactersList: Character[]): void {
     characters.value = [...charactersList]
+  }
+
+  function setCharactersDetail(charactersList: Character[]): void {
+    charactersDetail.value = [...charactersList]
   }
 
   function setCharacter(character: Character): void {
@@ -61,7 +66,7 @@ export const useCharacterStore = defineStore('character', () => {
   async function getCharacterById(characterId: number): Promise<Character> {
     return new Promise((resolve, reject) => {
       CharactersService.getById(characterId)
-        .then((response: APIResponseElement<Character>) => {
+        .then((response: APIResponse<Character>) => {
           setCharacter(
             response.status === 200 ? response.data : ({} as Character),
           )
@@ -69,6 +74,20 @@ export const useCharacterStore = defineStore('character', () => {
         })
         .catch((e: Error) => {
           setCharacter({} as Character)
+          reject(e)
+        })
+    })
+  }
+
+  async function getCharactersById(charactersId: string): Promise<Character[]> {
+    return new Promise((resolve, reject) => {
+      CharactersService.getAllById(charactersId)
+        .then((response: APIResponse<Character[]>) => {
+          setCharactersDetail(response.status === 200 ? response.data : [])
+          resolve(response.data)
+        })
+        .catch((e: Error) => {
+          setCharactersDetail([])
           reject(e)
         })
     })
@@ -82,5 +101,8 @@ export const useCharacterStore = defineStore('character', () => {
     setCharacters,
     getCharacterById,
     setCharacter,
+    getCharactersById,
+    setCharactersDetail,
+    charactersDetail,
   }
 })

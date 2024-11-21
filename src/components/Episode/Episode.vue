@@ -85,4 +85,10 @@ function goDetail(): void {
     }
   }
 }
+
+@media (max-width: 400px) {
+  .episode {
+    width: 280px;
+  }
+}
 </style>
