@@ -22,7 +22,7 @@ const router = useRouter()
 const sections = ref<Section[]>([
   { code: SectionEnum.CHARACTER, name: 'Characters' },
   { code: SectionEnum.EPISODE, name: 'Episodes' },
-  /*{ code: SectionEnum.LOCATION, name: 'Locations' },*/
+  { code: SectionEnum.LOCATION, name: 'Locations' },
 ])
 const loading = ref<boolean>(true)
 
