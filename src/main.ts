@@ -1,15 +1,8 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
 import App from './App.vue'
 import router from './router'
-import { vuetify } from './plugins/vuetify';
-
-
-/*import Vuetify from 'vuetify/lib'
-const vuetify = new Vuetify({})*/
+import { vuetify } from './plugins/vuetify'
 
 const app = createApp(App)
 

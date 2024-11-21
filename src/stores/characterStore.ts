@@ -3,8 +3,8 @@ import { defineStore } from 'pinia'
 
 import CharactersService from '@/services/charactersService'
 import { Character } from '@/classes/Character'
-import type { CharacterFilter } from '@/classes/CharacterFilter'
-import type { InfoApi } from '@/classes/InfoApi'
+import { CharacterFilter } from '@/classes/CharacterFilter'
+import { InfoApi } from '@/classes/InfoApi'
 import { CharacterLocation } from '@/classes/CharacterLocation'
 import type { APIResponseElement, APIResponseList } from '@/classes/ApiResponse'
 
@@ -68,7 +68,7 @@ export const useCharacterStore = defineStore('character', () => {
           resolve(response.data)
         })
         .catch((e: Error) => {
-          setCharacters([])
+          setCharacter({} as Character)
           reject(e)
         })
     })

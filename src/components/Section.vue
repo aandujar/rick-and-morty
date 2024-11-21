@@ -10,7 +10,7 @@
             <v-img
               height="100%"
               width="100%"
-              :src="`/src/assets/images/${getImage}`"
+              :src="`/src/assets/images/section/${getImage}`"
             />
           </div>
           <div class="section__content__text">
@@ -34,7 +34,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const images = import.meta.glob('@/assets/images/*', { eager: true })
+const images = import.meta.glob('@/assets/images/section/*', { eager: true })
 
 const getImage = computed<string>(() => {
   let img
