@@ -25,7 +25,7 @@
           />
         </v-col>
         <v-col cols="12" xs="12">
-          <CharacterEpisodes :episodes="characterStore.characterDetail.episode"
+          <CharacterEpisodes :episodes="episodeStore.episodesDetail"
         /></v-col>
       </div>
     </Transition>
@@ -35,28 +35,54 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useCharacterStore } from '@/stores/characterStore'
+import { useEpisodeStore } from '@/stores/episodeStore'
 import { Character } from '@/classes/Character'
 import CharacterComplete from '@/components/Character/CharacterComplete.vue'
 import CharacterEpisodes from '@/components/Character/CharacterEpisodes.vue'
-import { CHARACTERS } from '@/router/routerInterfaces'
+import { CHARACTERS, EPISODES } from '@/router/routerInterfaces'
 import { useRouter, useRoute } from 'vue-router'
+import { emitter } from '@/emitter/emitter'
 
 const router = useRouter()
 const route = useRoute()
 const characterStore = useCharacterStore()
+const episodeStore = useEpisodeStore()
 
 const loading = ref<boolean>(true)
 const showError = ref<boolean>(false)
 
+emitter.on('goEpisodeDetail', goToEpisodeDetail)
+
 onMounted(getCharacter)
 
 onBeforeUnmount(() => characterStore.setCharacter({} as Character))
+
+onBeforeUnmount(() => {
+  characterStore.setCharacter({} as Character)
+  episodeStore.setEpisodesDetail([])
+  emitter.off('goEpisodeDetail')
+})
 
 function getCharacter(): void {
   loading.value = true
 
   characterStore
     .getCharacterById(Number(route.params.characterId))
+    .then(getEpisodes)
+    .catch(() => {
+      showError.value = true
+      setTimeout(goCharacters, 2000)
+    })
+    .finally(() => setTimeout(() => (loading.value = false), 2000))
+}
+
+function getEpisodes(): void {
+  const episodesId: string = characterStore.characterDetail.episode
+    .map((episode: string) => episode.split('/episode/')[1])
+    .join(',')
+
+  episodeStore
+    .getEpisodesById(episodesId)
     .catch(() => {
       showError.value = true
       setTimeout(goCharacters, 2000)
@@ -66,6 +92,10 @@ function getCharacter(): void {
 
 function goCharacters(): void {
   router.push(CHARACTERS)
+}
+
+function goToEpisodeDetail(episodeId: number): void {
+  router.push(`${EPISODES}/${episodeId}`)
 }
 </script>
 

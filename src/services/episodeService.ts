@@ -11,6 +11,10 @@ class EpisodeService {
   getById(episodeId: number): Promise<APIResponse<Episode>> {
     return http.get(`/episode/${episodeId}`)
   }
+
+  getAllById(episodesId: string): Promise<APIResponse<Episode[]>> {
+    return http.get(`/episode/${episodesId}`)
+  }
 }
 
 export default new EpisodeService()

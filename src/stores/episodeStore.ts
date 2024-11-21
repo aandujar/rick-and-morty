@@ -10,10 +10,15 @@ import type { APIResponse, APIResponseList } from '@/classes/ApiResponse'
 export const useEpisodeStore = defineStore('episode', () => {
   const loading = ref<boolean>(false)
   const episodes = ref<Episode[]>([])
+  const episodesDetail = ref<Episode[]>([])
   let episodeDetail = ref<Episode>({} as Episode)
 
   function setEpisodes(episodeList: Episode[]): void {
     episodes.value = [...episodeList]
+  }
+
+  function setEpisodesDetail(episodesList: Episode[]): void {
+    episodesDetail.value = [...episodesList]
   }
 
   function setEpisode(episode: Episode): void {
@@ -58,6 +63,20 @@ export const useEpisodeStore = defineStore('episode', () => {
     })
   }
 
+  async function getEpisodesById(episodesId: string): Promise<Episode[]> {
+    return new Promise((resolve, reject) => {
+      EpisodeService.getAllById(episodesId)
+        .then((response: APIResponse<Episode[]>) => {
+          setEpisodesDetail(response.status === 200 ? response.data : [])
+          resolve(response.data)
+        })
+        .catch((e: Error) => {
+          setEpisodesDetail([])
+          reject(e)
+        })
+    })
+  }
+
   return {
     episodes,
     loading,
@@ -66,5 +85,8 @@ export const useEpisodeStore = defineStore('episode', () => {
     setEpisodes,
     getEpisodeById,
     setEpisode,
+    setEpisodesDetail,
+    getEpisodesById,
+    episodesDetail,
   }
 })

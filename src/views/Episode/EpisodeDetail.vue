@@ -54,6 +54,7 @@ onMounted(getEpisode)
 onBeforeUnmount(() => {
   episodeStore.setEpisode({} as Episode)
   characterStore.setCharactersDetail([])
+  emitter.off('goCharacterDetail')
 })
 
 function getEpisode(): void {

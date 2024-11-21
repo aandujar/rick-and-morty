@@ -38,13 +38,13 @@
         >
           No episodes
         </div>
-        <div
+        <EpisodeMini
           v-for="(episode, index) in episodes"
           :key="index"
-          class="character-episodes__content__text ma-4"
+          :episodeModel="episode"
+          class="ma-4"
         >
-          {{ `Episode ${getNumberEpisode(episode)}` }}
-        </div>
+        </EpisodeMini>
       </div>
     </v-card>
   </div>
@@ -52,9 +52,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import EpisodeMini from '@/components/Episode/EpisodeMini.vue'
+import { Episode } from '@/classes/Episode'
 
 const props = defineProps<{
-  episodes: string[]
+  episodes: Episode[]
 }>()
 
 const openPanel = ref<boolean>(false)
@@ -63,9 +65,9 @@ function togglePanel(): void {
   openPanel.value = !openPanel.value
 }
 
-function getNumberEpisode(episode: string): string {
+/*function getNumberEpisode(episode: string): string {
   return episode.split('episode/')[1]
-}
+}*/
 </script>
 
 <style lang="scss" scoped>
