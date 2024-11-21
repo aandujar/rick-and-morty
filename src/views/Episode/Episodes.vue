@@ -13,7 +13,10 @@
     </Transition>
     <Transition name="fade" mode="out-in">
       <div v-show="!loading" key="content" class="episodes__content">
-        <div class="episodes__content__pagination text-center pa-2">
+        <div
+          class="episodes__content__filter text-center pa-2"
+          :class="{ 'episodes__content__filter--margin': !mdAndDown }"
+        >
           <EpisodeFilterComponent @input="setEpisodeFilter" @goBack="goBack" />
         </div>
         <div
@@ -37,7 +40,7 @@
             class="cursor-pointer"
             v-model="currentPage"
             :length="totalPages"
-            :total-visible="totalPages <= 8 ? totalPages : 8"
+            :total-visible="visiblePages"
             @update:model-value="getEpisodes"
           ></v-pagination>
         </div>
@@ -47,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useEpisodeStore } from '@/stores/episodeStore'
 import { InfoApi } from '@/classes/InfoApi'
 import { EpisodeFilter } from '@/classes/EpisodeFilter'
@@ -55,7 +58,9 @@ import Episode from '@/components/Episode/Episode.vue'
 import EpisodeFilterComponent from '@/components/Episode/EpisodeFilter.vue'
 import { useRouter } from 'vue-router'
 import { SECTIONS, EPISODES } from '@/router/routerInterfaces'
+import { useDisplay } from 'vuetify'
 const router = useRouter()
+const { mdAndDown } = useDisplay()
 
 const episodeStore = useEpisodeStore()
 
@@ -65,6 +70,18 @@ const totalPages = ref<number>(0)
 const currentPage = ref<number>(1)
 
 const episodeFilter: EpisodeFilter = new EpisodeFilter(0, '', '')
+
+const visiblePages = computed<number>(() => {
+  let pages
+
+  if (mdAndDown.value) {
+    pages = 3
+  } else {
+    pages = totalPages.value <= 8 ? totalPages.value : 8
+  }
+
+  return pages
+})
 
 onMounted(getEpisodes)
 
@@ -133,6 +150,17 @@ function goBack(): void {
     &__pagination {
       margin: 20px;
       width: 100%;
+    }
+
+    &__filter {
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      &--margin {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
 
     &__no-data {

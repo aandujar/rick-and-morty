@@ -13,7 +13,10 @@
     </Transition>
     <Transition name="fade" mode="out-in">
       <div v-show="!loading" key="content" class="characters__content">
-        <div class="characters__content__pagination text-center pa-2">
+        <div
+          class="characters__content__filter text-center pa-2"
+          :class="{ 'characters__content__filter--margin': !mdAndDown }"
+        >
           <CharacterFilterComponent
             @input="setCharacterFilter"
             @goBack="goBack"
@@ -44,7 +47,7 @@
             class="cursor-pointer"
             v-model="currentPage"
             :length="totalPages"
-            :total-visible="totalPages <= 8 ? totalPages : 8"
+            :total-visible="visiblePages"
             @update:model-value="getCharacters"
           ></v-pagination>
         </div>
@@ -54,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { InfoApi } from '@/classes/InfoApi'
 import { CharacterFilter } from '@/classes/CharacterFilter'
@@ -62,7 +65,9 @@ import Character from '@/components/Character/Character.vue'
 import CharacterFilterComponent from '@/components/Character/CharacterFilter.vue'
 import { useRouter } from 'vue-router'
 import { SECTIONS, CHARACTERS } from '@/router/routerInterfaces'
+import { useDisplay } from 'vuetify'
 const router = useRouter()
+const { mdAndDown } = useDisplay()
 
 const characterStore = useCharacterStore()
 
@@ -72,6 +77,18 @@ const totalPages = ref<number>(0)
 const currentPage = ref<number>(1)
 
 const characterFilter: CharacterFilter = new CharacterFilter(0, '', '', '')
+
+const visiblePages = computed<number>(() => {
+  let pages
+
+  if (mdAndDown.value) {
+    pages = 3
+  } else {
+    pages = totalPages.value <= 8 ? totalPages.value : 8
+  }
+
+  return pages
+})
 
 onMounted(getCharacters)
 
@@ -143,6 +160,17 @@ function goBack(): void {
     &__pagination {
       margin: 20px;
       width: 100%;
+    }
+
+    &__filter {
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      &--margin {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
 
     &__no-data {

@@ -13,7 +13,10 @@
     </Transition>
     <Transition name="fade" mode="out-in">
       <div v-show="!loading" key="content" class="locations__content">
-        <div class="locations__content__pagination text-center pa-2">
+        <div
+          class="locations__content__filter text-center pa-2"
+          :class="{ 'locations__content__filter--margin': !mdAndDown }"
+        >
           <LocationFilterComponent
             @input="setLocationFilter"
             @goBack="goBack"
@@ -44,7 +47,7 @@
             class="cursor-pointer"
             v-model="currentPage"
             :length="totalPages"
-            :total-visible="totalPages <= 8 ? totalPages : 8"
+            :total-visible="visiblePages"
             @update:model-value="getLocations"
           ></v-pagination>
         </div>
@@ -54,15 +57,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useLocationStore } from '@/stores/locationStore'
 import { InfoApi } from '@/classes/InfoApi'
 import { LocationFilter } from '@/classes/LocationFilter'
 import Location from '@/components/Location/Location.vue'
 import LocationFilterComponent from '@/components/Location/LocationFilter.vue'
 import { useRouter } from 'vue-router'
-import { LOCATIONS, SECTIONS /*CHARACTERS*/ } from '@/router/routerInterfaces'
+import { LOCATIONS, SECTIONS } from '@/router/routerInterfaces'
+import { useDisplay } from 'vuetify'
 const router = useRouter()
+const { mdAndDown } = useDisplay()
 
 const locationStore = useLocationStore()
 
@@ -72,6 +77,18 @@ const totalPages = ref<number>(0)
 const currentPage = ref<number>(1)
 
 const locationFilter: LocationFilter = new LocationFilter(0, '', '', '')
+
+const visiblePages = computed<number>(() => {
+  let pages
+
+  if (mdAndDown.value) {
+    pages = 3
+  } else {
+    pages = totalPages.value <= 8 ? totalPages.value : 8
+  }
+
+  return pages
+})
 
 onMounted(getLocations)
 
@@ -143,6 +160,17 @@ function goBack(): void {
     &__pagination {
       margin: 20px;
       width: 100%;
+    }
+
+    &__filter {
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      &--margin {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
 
     &__no-data {
