@@ -77,17 +77,29 @@ function getCharacter(): void {
 }
 
 function getEpisodes(): void {
-  const episodesId: string = characterStore.characterDetail.episode
-    .map((episode: string) => episode.split('/episode/')[1])
-    .join(',')
+  if (characterStore.characterDetail.episode.length > 1) {
+    const episodesId: string = characterStore.characterDetail.episode
+      .map((episode: string) => episode.split('/episode/')[1])
+      .join(',')
 
-  episodeStore
-    .getEpisodesById(episodesId)
-    .catch(() => {
-      showError.value = true
-      setTimeout(goCharacters, 2000)
-    })
-    .finally(() => setTimeout(() => (loading.value = false), 2000))
+    episodeStore
+      .getEpisodesById(episodesId)
+      .catch(() => {
+        showError.value = true
+        setTimeout(goCharacters, 2000)
+      })
+      .finally(() => setTimeout(() => (loading.value = false), 2000))
+  } else {
+    episodeStore
+      .getEpisodeByIdForDetail(
+        Number(characterStore.characterDetail.episode[0].split('/episode/')[1]),
+      )
+      .catch(() => {
+        showError.value = true
+        setTimeout(goCharacters, 2000)
+      })
+      .finally(() => setTimeout(() => (loading.value = false), 2000))
+  }
 }
 
 function goCharacters(): void {

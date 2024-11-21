@@ -1,5 +1,5 @@
 <template>
-  <div class="episode-detail">
+  <div class="location-detail">
     <v-snackbar
       v-model="showError"
       :timeout="5000"
@@ -7,21 +7,25 @@
       color="red"
       height="100px"
     >
-      No episode found
+      No location found
     </v-snackbar>
     <Transition name="fade" mode="out-in">
-      <div v-if="loading" key="loader" class="episode-detail__loader pt-8 px-4">
+      <div
+        v-if="loading"
+        key="loader"
+        class="location-detail__loader pt-8 px-4"
+      >
         <v-skeleton-loader height="400px" width="80%" type="card" />
       </div>
-      <div v-else key="content" class="episode-detail__content">
+      <div v-else key="content" class="location-detail__content">
         <v-col cols="12" xs="12">
-          <EpisodeComplete
-            :episodeModel="episodeStore.episodeDetail"
-            @goBack="goEpisodes"
+          <LocationComplete
+            :locationModel="locationStore.locationDetail"
+            @goBack="goLocations"
           />
         </v-col>
         <v-col cols="12" xs="12">
-          <EpisodeCharacters :characters="characterStore.charactersDetail"
+          <LocationCharacters :characters="characterStore.charactersDetail"
         /></v-col>
       </div>
     </Transition>
@@ -30,75 +34,75 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useEpisodeStore } from '@/stores/episodeStore'
 import { useCharacterStore } from '@/stores/characterStore'
-import { Episode } from '@/classes/Episode'
-import EpisodeComplete from '@/components/Episode/EpisodeComplete.vue'
-import EpisodeCharacters from '@/components/Episode/EpisodeCharacters.vue'
-import { EPISODES, CHARACTERS } from '@/router/routerInterfaces'
+import { useLocationStore } from '@/stores/locationStore'
+import LocationComplete from '@/components/Location/LocationComplete.vue'
+import LocationCharacters from '@/components/Location/LocationCharacters.vue'
+import { CHARACTERS, LOCATIONS } from '@/router/routerInterfaces'
 import { useRouter, useRoute } from 'vue-router'
 import { emitter } from '@/emitter/emitter'
 
 const router = useRouter()
 const route = useRoute()
-const episodeStore = useEpisodeStore()
 const characterStore = useCharacterStore()
+const locationStore = useLocationStore()
 
 const loading = ref<boolean>(true)
 const showError = ref<boolean>(false)
 
 emitter.on('goCharacterDetail', goToCharacterDetail)
 
-onMounted(getEpisode)
+onMounted(getLocation)
+
+onBeforeUnmount(() => locationStore.setLocation({} as Location))
 
 onBeforeUnmount(() => {
-  episodeStore.setEpisode({} as Episode)
+  locationStore.setLocation({} as Location)
   characterStore.setCharactersDetail([])
   emitter.off('goCharacterDetail')
 })
 
-function getEpisode(): void {
+function getLocation(): void {
   loading.value = true
 
-  episodeStore
-    .getEpisodeById(Number(route.params.episodeId))
+  locationStore
+    .getLocationById(Number(route.params.locationId))
     .then(getCharacters)
     .catch(() => {
       showError.value = true
-      setTimeout(goEpisodes, 2000)
+      setTimeout(goLocations, 2000)
     })
+    .finally(() => setTimeout(() => (loading.value = false), 2000))
 }
 
 function getCharacters(): void {
-  if (episodeStore.episodeDetail.characters.length > 1) {
-    const charactersId: string = episodeStore.episodeDetail.characters
-      .map((character: string) => character.split('/character/')[1])
+  if (locationStore.locationDetail.residents.length > 0) {
+    const charactersId: string = locationStore.locationDetail.residents
+      .map((resident: string) => resident.split('/character/')[1])
       .join(',')
 
     characterStore
       .getCharactersById(charactersId)
       .catch(() => {
         showError.value = true
-        setTimeout(goEpisodes, 2000)
+        setTimeout(goLocations, 2000)
       })
       .finally(() => setTimeout(() => (loading.value = false), 2000))
   } else {
     characterStore
       .getCharacterByIdForDetail(
-        Number(
-          episodeStore.episodeDetail.characters[0].split('/character/')[1],
-        ),
+        locationStore.locationDetail.residents[0].split('/character/')[1],
       )
       .catch(() => {
         showError.value = true
-        setTimeout(goEpisodes, 2000)
+        setTimeout(goLocations, 2000)
       })
       .finally(() => setTimeout(() => (loading.value = false), 2000))
   }
 }
 
-function goEpisodes(): void {
-  router.push(EPISODES)
+function goLocations(): void {
+  router.push(LOCATIONS)
 }
 
 function goToCharacterDetail(characterId: number): void {
@@ -107,7 +111,7 @@ function goToCharacterDetail(characterId: number): void {
 </script>
 
 <style lang="scss">
-.episode-detail {
+.location-detail {
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;

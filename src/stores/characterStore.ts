@@ -79,6 +79,28 @@ export const useCharacterStore = defineStore('character', () => {
     })
   }
 
+  async function getCharacterByIdForDetail(
+    characterId: number,
+  ): Promise<Character> {
+    return new Promise((resolve, reject) => {
+      CharactersService.getById(characterId)
+        .then((response: APIResponse<Character>) => {
+          if (response.status === 200) {
+            const charactersList: Character[] = []
+            charactersList.push(response.data)
+            setCharactersDetail(charactersList)
+          } else {
+            setCharactersDetail([])
+          }
+          resolve(response.data)
+        })
+        .catch((e: Error) => {
+          setCharacter({} as Character)
+          reject(e)
+        })
+    })
+  }
+
   async function getCharactersById(charactersId: string): Promise<Character[]> {
     return new Promise((resolve, reject) => {
       CharactersService.getAllById(charactersId)
@@ -97,12 +119,13 @@ export const useCharacterStore = defineStore('character', () => {
     characters,
     loading,
     characterDetail,
+    charactersDetail,
     getCharacters,
     setCharacters,
     getCharacterById,
     setCharacter,
     getCharactersById,
     setCharactersDetail,
-    charactersDetail,
+    getCharacterByIdForDetail,
   }
 })

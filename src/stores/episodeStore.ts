@@ -63,6 +63,26 @@ export const useEpisodeStore = defineStore('episode', () => {
     })
   }
 
+  async function getEpisodeByIdForDetail(episodeId: number): Promise<Episode> {
+    return new Promise((resolve, reject) => {
+      EpisodeService.getById(episodeId)
+        .then((response: APIResponse<Episode>) => {
+          if (response.status === 200) {
+            const episodessList: Episode[] = []
+            episodessList.push(response.data)
+            setEpisodesDetail(episodessList)
+          } else {
+            setEpisodesDetail([])
+          }
+          resolve(response.data)
+        })
+        .catch((e: Error) => {
+          setEpisode({} as Episode)
+          reject(e)
+        })
+    })
+  }
+
   async function getEpisodesById(episodesId: string): Promise<Episode[]> {
     return new Promise((resolve, reject) => {
       EpisodeService.getAllById(episodesId)
@@ -81,12 +101,13 @@ export const useEpisodeStore = defineStore('episode', () => {
     episodes,
     loading,
     episodeDetail,
+    episodesDetail,
     getEpisodes,
     setEpisodes,
     getEpisodeById,
     setEpisode,
     setEpisodesDetail,
     getEpisodesById,
-    episodesDetail,
+    getEpisodeByIdForDetail,
   }
 })
