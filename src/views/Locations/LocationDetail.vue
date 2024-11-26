@@ -38,6 +38,7 @@ import { useCharacterStore } from '@/stores/characterStore'
 import { useLocationStore } from '@/stores/locationStore'
 import LocationComplete from '@/components/Location/LocationComplete.vue'
 import LocationCharacters from '@/components/Location/LocationCharacters.vue'
+import { Location } from '@/classes/Location'
 import { CHARACTERS, LOCATIONS } from '@/router/routerInterfaces'
 import { useRouter, useRoute } from 'vue-router'
 import { emitter } from '@/emitter/emitter'
@@ -91,7 +92,9 @@ function getCharacters(): void {
   } else {
     characterStore
       .getCharacterByIdForDetail(
-        locationStore.locationDetail.residents[0].split('/character/')[1],
+        Number(
+          locationStore.locationDetail.residents[0].split('/character/')[1],
+        ),
       )
       .catch(() => {
         showError.value = true

@@ -47,10 +47,10 @@ const character = ref<Character>(
     props.characterModel.type,
     props.characterModel.gender,
     props.characterModel.image,
-    props.characterModel.origin
+    props.characterModel._origin
       ? new CharacterLocation(
-          props.characterModel.origin.name,
-          props.characterModel.origin.url,
+          props.characterModel._origin.name,
+          props.characterModel._origin.url,
         )
       : undefined,
   ),

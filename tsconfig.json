@@ -3,6 +3,7 @@
     "module": "es2022",
     "moduleResolution": "Node"
   },
+  "typeRoots": ["node_modules/@types"],
   "files": [],
   "references": [
     {

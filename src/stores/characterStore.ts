@@ -32,13 +32,13 @@ export const useCharacterStore = defineStore('character', () => {
         character.type,
         character.gender,
         character.image,
-        character.origin
-          ? new CharacterLocation(character.origin.name, character.origin.url)
+        character._origin
+          ? new CharacterLocation(character._origin.name, character._origin.url)
           : undefined,
-        character.location
+        character._location
           ? new CharacterLocation(
-              character.location.name,
-              character.location.url,
+              character._location.name,
+              character._location.url,
             )
           : undefined,
         character.created,

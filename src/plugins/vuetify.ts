@@ -1,9 +1,6 @@
-//import 'vuetify/lib/styles/main.sass';
-//import '../sass/variables.scss';
-
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/lib/components/index'
-import * as directives from 'vuetify/lib/directives/index'
+import * as components from 'vuetify/lib/components/index.mjs'
+import * as directives from 'vuetify/lib/directives/index.mjs'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 
